@@ -7,6 +7,11 @@ public class PlayerMovement : MonoBehaviour
 {
     // Start is called before the first frame update
 
+    [Header("Player Health Things")]
+    private float playerHealth = 1000f;
+    private float presentHealth;
+
+
     [Header("Player Movement")]
     public float playerSpeed = 1.9f;
     public float currentPlayerSpeed = 0f;
@@ -37,11 +42,14 @@ public class PlayerMovement : MonoBehaviour
 
     public float jumpRange = 1f;
 
+    public Animator animator;
+
   
 
     void Start()
     {
-        
+        Cursor.lockState = CursorLockMode.Locked;
+        presentHealth = playerHealth;
     }
 
     // Update is called once per frame
@@ -80,6 +88,28 @@ public class PlayerMovement : MonoBehaviour
 
             currentPlayerSpeed = playerSpeed;
         }
+
+        else
+        {
+            animator.SetBool("Idle", false);
+            animator.SetBool("Walk", false);
+            currentPlayerSpeed = 0f;
+        }
+    }
+
+    public void playerHitDamage(float takeDamage)
+    {
+        presentHealth -= takeDamage;
+
+        if(presentHealth<=0)
+        {
+            PlayerDie();
+        }
+    }
+
+    private void PlayerDie()
+    {
+        Object.Destroy(gameObject);
     }
 
     void Sprint()
