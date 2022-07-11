@@ -5280,7 +5280,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 20480
   jumpRange: 1
-  animator: {fileID: 0}
+  animator: {fileID: 425848394}
 --- !u!95 &425848394
 Animator:
   serializedVersion: 4
