@@ -79,6 +79,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (direction.magnitude >= 0.1f)
         {
+            animator.SetBool("Walk", true);
+            animator.SetBool("Running", false);
+            animator.SetBool("Idle", false);
+            animator.SetTrigger("Jump");
+            animator.SetBool("AnimWalk", false);
+            animator.SetBool("IdleAnim", false);
+
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnCalmVelocity, turnCalmTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
@@ -91,8 +98,11 @@ public class PlayerMovement : MonoBehaviour
 
         else
         {
-            animator.SetBool("Idle", false);
+            animator.SetBool("Idle", true);
+            animator.SetTrigger("Jump");
             animator.SetBool("Walk", false);
+            animator.SetBool("Running", false);
+            animator.SetBool("AnimWalk", false);
             currentPlayerSpeed = 0f;
         }
     }
@@ -124,6 +134,14 @@ public class PlayerMovement : MonoBehaviour
 
             if (direction.magnitude >= 0.1f)
             {
+                animator.SetBool("Running", true);
+                animator.SetBool("Idle", false);
+                animator.SetTrigger("Jump");
+                animator.SetBool("Walk", false);
+               
+                animator.SetBool("AnimWalk", false);
+
+
                 float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnCalmVelocity, turnCalmTime);
                 transform.rotation = Quaternion.Euler(0f, angle, 0f);
@@ -133,6 +151,13 @@ public class PlayerMovement : MonoBehaviour
 
                 currentPlayerSprint = playerSprint;
             }
+            else
+            {
+              
+                animator.SetBool("Idle", false);
+                animator.SetBool("Walk", false);
+                currentPlayerSprint = 0f;
+            }
         }
     }
 
@@ -140,7 +165,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if(Input.GetButtonDown("Jump") && onSurface)
         {
+            animator.SetBool("Walk", false);
+            animator.SetTrigger("Jump");
+      
             velocity.y = Mathf.Sqrt(jumpRange * -2 * gravity);
+        }
+        else
+        {
+            animator.ResetTrigger("Jump");
         }
     }
 }
